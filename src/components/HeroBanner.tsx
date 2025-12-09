@@ -16,7 +16,7 @@ const HeroBanner = () => {
       });
     }
   };
-  
+
   return (
     <section className="relative overflow-hidden bg-gradient-warm">
       <div className="container mx-auto px-4 py-12 lg:py-20">
@@ -37,14 +37,7 @@ const HeroBanner = () => {
                 <Gift className="h-5 w-5" />
                 Ver Cestas
               </Button>
-              <Button size="lg" variant="outline" className="text-lg px-8 gap-2" onClick={scrollToCestas}>
-                <Truck className="h-5 w-5" />
-                Frete Grátis*
-              </Button>
             </div>
-            <p className="text-xs text-muted-foreground mt-4 animate-fade-up" style={{ animationDelay: "0.4s" }}>
-              *Frete grátis para compras acima de R$ 200
-            </p>
           </div>
 
           {/* Image */}

@@ -18,9 +18,14 @@ const Header = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Verifica se o usuário está logado
-    const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
-    setIsLoggedIn(loggedIn);
+    const checkAuth = () => {
+      setIsLoggedIn(localStorage.getItem("isLoggedIn") === "true");
+    };
+
+    window.addEventListener("storage", checkAuth);
+    checkAuth();
+
+    return () => window.removeEventListener("storage", checkAuth);
   }, []);
 
   const navLinks = [
@@ -127,13 +132,23 @@ const Header = () => {
                     <User className="h-5 w-5" />
                   </Button>
                 </DropdownMenuTrigger>
+
                 <DropdownMenuContent align="end">
+                  {/* 👉 Opção para admin */}
+                  {localStorage.getItem('isAdmin') === 'true' && (
+                    <DropdownMenuItem onClick={() => navigate('/admin')}>
+                      Painel Admin
+                    </DropdownMenuItem>
+                  )}
+
                   <DropdownMenuItem onClick={() => navigate('/pedidos')}>
                     Meus Pedidos
                   </DropdownMenuItem>
+
                   <DropdownMenuItem onClick={() => navigate('/configuracoes')}>
                     Meu Perfil
                   </DropdownMenuItem>
+
                   <DropdownMenuItem onClick={handleLogout}>
                     Sair
                   </DropdownMenuItem>
@@ -164,6 +179,7 @@ const Header = () => {
                 </Badge>
               )}
             </Button>
+
             <Button
               variant="ghost"
               size="icon"

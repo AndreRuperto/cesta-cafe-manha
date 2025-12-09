@@ -15,6 +15,7 @@ import Confirmation from "./pages/Confirmation";
 import Auth from "./pages/Auth";
 import OrderHistory from "./pages/OrderHistory";
 import Settings from "./pages/Settings";
+import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -37,6 +38,7 @@ const AppContent = () => {
           <Route path="/login" element={<Auth />} />
           <Route path="/pedidos" element={<OrderHistory />} />
           <Route path="/configuracoes" element={<Settings />} />
+          <Route path="/admin" element={<Admin />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

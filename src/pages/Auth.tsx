@@ -29,7 +29,8 @@ const Auth = () => {
       // Aqui você pode salvar o token/sessão
       localStorage.setItem('isLoggedIn', 'true');
       localStorage.setItem('userEmail', email);
-      navigate('/');
+      localStorage.setItem('isAdmin', 'true');
+      window.location.href = "/";
     } else {
       alert('Email ou senha incorretos!\n\nUse as credenciais de teste:\nEmail: teste@cafemanha.com\nSenha: 123456');
     }
