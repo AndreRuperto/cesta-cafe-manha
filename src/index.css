@@ -6,67 +6,69 @@
 
 @layer base {
   :root {
-    /* Warm breakfast palette */
-    --background: 45 30% 98%;
-    --foreground: 25 25% 15%;
+    /* Base colors: #FFFAF4 (cream) and #9A5E28 (brown) */
+    /* #FFFAF4 = 33 100% 98% | #9A5E28 = 28 59% 38% */
+    
+    --background: 33 100% 98%;
+    --foreground: 28 59% 20%;
 
-    --card: 45 40% 99%;
-    --card-foreground: 25 25% 15%;
+    --card: 33 100% 99%;
+    --card-foreground: 28 59% 20%;
 
-    --popover: 45 40% 99%;
-    --popover-foreground: 25 25% 15%;
+    --popover: 33 100% 99%;
+    --popover-foreground: 28 59% 20%;
 
-    /* Warm amber/gold - coffee tones */
-    --primary: 30 80% 45%;
-    --primary-foreground: 45 30% 98%;
+    /* Primary: #9A5E28 brown */
+    --primary: 28 59% 38%;
+    --primary-foreground: 33 100% 98%;
 
-    /* Cream/beige */
-    --secondary: 40 35% 92%;
-    --secondary-foreground: 25 25% 20%;
+    /* Secondary: cream with opacity feel */
+    --secondary: 33 60% 94%;
+    --secondary-foreground: 28 59% 25%;
 
-    /* Muted warm tones */
-    --muted: 40 20% 94%;
-    --muted-foreground: 25 15% 45%;
+    /* Muted: lighter brown tones */
+    --muted: 33 40% 95%;
+    --muted-foreground: 28 30% 45%;
 
-    /* Terracotta accent */
-    --accent: 15 70% 50%;
-    --accent-foreground: 45 30% 98%;
+    /* Accent: darker brown variation */
+    --accent: 28 65% 32%;
+    --accent-foreground: 33 100% 98%;
 
     --destructive: 0 84% 60%;
-    --destructive-foreground: 45 30% 98%;
+    --destructive-foreground: 33 100% 98%;
 
-    --border: 35 25% 88%;
-    --input: 35 25% 88%;
-    --ring: 30 80% 45%;
+    --border: 28 30% 88%;
+    --input: 28 30% 88%;
+    --ring: 28 59% 38%;
 
     --radius: 0.75rem;
 
-    /* Custom colors for the brand */
-    --coffee: 25 60% 25%;
-    --croissant: 40 65% 70%;
-    --honey: 42 90% 55%;
-    --cream: 45 40% 95%;
-    --terracotta: 15 65% 45%;
+    /* Custom brand colors based on #9A5E28 */
+    --coffee: 28 59% 25%;
+    --croissant: 33 50% 75%;
+    --honey: 35 70% 50%;
+    --cream: 33 100% 96%;
+    --terracotta: 20 55% 35%;
 
-    /* Gradients */
-    --gradient-hero: linear-gradient(135deg, hsl(30 80% 45%) 0%, hsl(15 70% 50%) 100%);
-    --gradient-warm: linear-gradient(180deg, hsl(45 30% 98%) 0%, hsl(40 35% 92%) 100%);
-    --gradient-card: linear-gradient(145deg, hsl(45 40% 99%) 0%, hsl(40 35% 96%) 100%);
+    /* Gradients using the two base colors */
+    --gradient-hero: linear-gradient(135deg, hsl(28 59% 38%) 0%, hsl(28 65% 28%) 100%);
+    --gradient-warm: linear-gradient(180deg, hsl(33 100% 98%) 0%, hsl(33 60% 94%) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(33 100% 99%) 0%, hsl(33 60% 96%) 100%);
 
-    /* Shadows */
-    --shadow-soft: 0 4px 20px -4px hsl(25 25% 15% / 0.1);
-    --shadow-card: 0 8px 30px -8px hsl(25 25% 15% / 0.12);
-    --shadow-hover: 0 12px 40px -10px hsl(30 80% 45% / 0.25);
+    /* Shadows with brown tint */
+    --shadow-soft: 0 4px 20px -4px hsl(28 59% 20% / 0.1);
+    --shadow-card: 0 8px 30px -8px hsl(28 59% 20% / 0.12);
+    --shadow-hover: 0 12px 40px -10px hsl(28 59% 38% / 0.3);
 
-    /* Sidebar (keeping defaults) */
-    --sidebar-background: 45 30% 98%;
-    --sidebar-foreground: 25 25% 25%;
-    --sidebar-primary: 30 80% 45%;
-    --sidebar-primary-foreground: 45 30% 98%;
-    --sidebar-accent: 40 35% 92%;
-    --sidebar-accent-foreground: 25 25% 20%;
-    --sidebar-border: 35 25% 88%;
-    --sidebar-ring: 30 80% 45%;
+    /* Sidebar */
+    --sidebar-background: 33 100% 98%;
+    --sidebar-foreground: 28 59% 25%;
+    --sidebar-primary: 28 59% 38%;
+    --sidebar-primary-foreground: 33 100% 98%;
+    --sidebar-accent: 33 60% 94%;
+    --sidebar-accent-foreground: 28 59% 25%;
+    --sidebar-border: 28 30% 88%;
+    --sidebar-ring: 28 59% 38%;
   }
 
   .dark {

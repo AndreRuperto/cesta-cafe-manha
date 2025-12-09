@@ -81,7 +81,7 @@ const About = () => {
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-16">
+        {/* <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-16">
           {stats.map((stat, index) => (
             <div 
               key={index}
@@ -96,10 +96,10 @@ const About = () => {
               </p>
             </div>
           ))}
-        </div>
+        </div> */}
 
         {/* Values */}
-        <div className="mb-16">
+        {/* <div className="mb-16">
           <h3 className="font-serif text-2xl font-semibold text-foreground text-center mb-12">
             Nossos Valores
           </h3>
@@ -121,10 +121,10 @@ const About = () => {
               </div>
             ))}
           </div>
-        </div>
+        </div> */}
 
         {/* Mission */}
-        <div className="bg-gradient-to-br from-primary/10 to-accent/10 rounded-2xl p-8 md:p-12 text-center">
+        {/* <div className="bg-gradient-to-br from-primary/10 to-accent/10 rounded-2xl p-8 md:p-12 text-center">
           <h3 className="font-serif text-2xl font-semibold text-foreground mb-4">
             Nossa Missão
           </h3>
@@ -134,7 +134,7 @@ const About = () => {
             momentos mais especiais, transformando um simples café da manhã em uma 
             experiência inesquecível.
           </p>
-        </div>
+        </div> */}
       </div>
     </section>
   );
