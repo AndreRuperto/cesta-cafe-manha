@@ -1,0 +1,192 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+@layer base {
+  :root {
+    /* Warm breakfast palette */
+    --background: 45 30% 98%;
+    --foreground: 25 25% 15%;
+
+    --card: 45 40% 99%;
+    --card-foreground: 25 25% 15%;
+
+    --popover: 45 40% 99%;
+    --popover-foreground: 25 25% 15%;
+
+    /* Warm amber/gold - coffee tones */
+    --primary: 30 80% 45%;
+    --primary-foreground: 45 30% 98%;
+
+    /* Cream/beige */
+    --secondary: 40 35% 92%;
+    --secondary-foreground: 25 25% 20%;
+
+    /* Muted warm tones */
+    --muted: 40 20% 94%;
+    --muted-foreground: 25 15% 45%;
+
+    /* Terracotta accent */
+    --accent: 15 70% 50%;
+    --accent-foreground: 45 30% 98%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 45 30% 98%;
+
+    --border: 35 25% 88%;
+    --input: 35 25% 88%;
+    --ring: 30 80% 45%;
+
+    --radius: 0.75rem;
+
+    /* Custom colors for the brand */
+    --coffee: 25 60% 25%;
+    --croissant: 40 65% 70%;
+    --honey: 42 90% 55%;
+    --cream: 45 40% 95%;
+    --terracotta: 15 65% 45%;
+
+    /* Gradients */
+    --gradient-hero: linear-gradient(135deg, hsl(30 80% 45%) 0%, hsl(15 70% 50%) 100%);
+    --gradient-warm: linear-gradient(180deg, hsl(45 30% 98%) 0%, hsl(40 35% 92%) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(45 40% 99%) 0%, hsl(40 35% 96%) 100%);
+
+    /* Shadows */
+    --shadow-soft: 0 4px 20px -4px hsl(25 25% 15% / 0.1);
+    --shadow-card: 0 8px 30px -8px hsl(25 25% 15% / 0.12);
+    --shadow-hover: 0 12px 40px -10px hsl(30 80% 45% / 0.25);
+
+    /* Sidebar (keeping defaults) */
+    --sidebar-background: 45 30% 98%;
+    --sidebar-foreground: 25 25% 25%;
+    --sidebar-primary: 30 80% 45%;
+    --sidebar-primary-foreground: 45 30% 98%;
+    --sidebar-accent: 40 35% 92%;
+    --sidebar-accent-foreground: 25 25% 20%;
+    --sidebar-border: 35 25% 88%;
+    --sidebar-ring: 30 80% 45%;
+  }
+
+  .dark {
+    --background: 25 20% 8%;
+    --foreground: 45 30% 95%;
+
+    --card: 25 18% 12%;
+    --card-foreground: 45 30% 95%;
+
+    --popover: 25 18% 12%;
+    --popover-foreground: 45 30% 95%;
+
+    --primary: 35 85% 55%;
+    --primary-foreground: 25 20% 8%;
+
+    --secondary: 25 15% 18%;
+    --secondary-foreground: 45 30% 95%;
+
+    --muted: 25 15% 18%;
+    --muted-foreground: 40 15% 60%;
+
+    --accent: 20 75% 55%;
+    --accent-foreground: 25 20% 8%;
+
+    --destructive: 0 62% 30%;
+    --destructive-foreground: 45 30% 95%;
+
+    --border: 25 15% 20%;
+    --input: 25 15% 20%;
+    --ring: 35 85% 55%;
+
+    --sidebar-background: 25 20% 10%;
+    --sidebar-foreground: 45 30% 95%;
+    --sidebar-primary: 35 85% 55%;
+    --sidebar-primary-foreground: 25 20% 8%;
+    --sidebar-accent: 25 15% 18%;
+    --sidebar-accent-foreground: 45 30% 95%;
+    --sidebar-border: 25 15% 20%;
+    --sidebar-ring: 35 85% 55%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-family: 'Inter', sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Playfair Display', serif;
+  }
+}
+
+@layer components {
+  .trust-badge {
+    @apply flex items-center gap-3 px-4 py-3 bg-secondary/50 rounded-lg transition-all duration-300 hover:bg-secondary;
+  }
+
+  .product-card {
+    @apply bg-card rounded-xl overflow-hidden transition-all duration-300 hover:shadow-[var(--shadow-hover)] hover:-translate-y-1;
+    box-shadow: var(--shadow-card);
+  }
+
+  .nav-link {
+    @apply relative text-muted-foreground hover:text-primary transition-colors duration-200 font-medium;
+  }
+
+  .nav-link::after {
+    @apply absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300;
+    content: '';
+  }
+
+  .nav-link:hover::after {
+    @apply w-full;
+  }
+
+  .category-pill {
+    @apply px-5 py-2.5 bg-secondary text-secondary-foreground rounded-full font-medium transition-all duration-300 hover:bg-primary hover:text-primary-foreground cursor-pointer;
+  }
+
+  .price-tag {
+    @apply text-2xl font-bold text-primary;
+  }
+
+  .installment {
+    @apply text-sm text-muted-foreground;
+  }
+
+  .installment-highlight {
+    @apply text-accent font-semibold;
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    @apply bg-clip-text text-transparent;
+    background-image: var(--gradient-hero);
+  }
+
+  .bg-gradient-hero {
+    background-image: var(--gradient-hero);
+  }
+
+  .bg-gradient-warm {
+    background-image: var(--gradient-warm);
+  }
+
+  .shadow-soft {
+    box-shadow: var(--shadow-soft);
+  }
+
+  .shadow-card {
+    box-shadow: var(--shadow-card);
+  }
+
+  .shadow-hover {
+    box-shadow: var(--shadow-hover);
+  }
+}
