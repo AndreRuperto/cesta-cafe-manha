@@ -47,7 +47,7 @@ const WhatsAppButton = () => {
         </div>
         
         <p className="text-sm text-muted-foreground mb-4">
-          Olá! 👋 Como podemos ajudar você hoje? Tire suas dúvidas sobre nossas cestas!
+          Olá! Como podemos ajudar você hoje? Tire suas dúvidas sobre nossas cestas!
         </p>
         
         <button

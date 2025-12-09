@@ -1,35 +1,74 @@
-import { useState } from "react";
-import { Search, ShoppingCart, User, Menu, X, Phone, Shield, Truck, CreditCard } from "lucide-react";
+import { useState, useEffect } from "react";
+import { ShoppingCart, User, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { useCart } from "@/contexts/CartContext";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [cartCount] = useState(0);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { itemCount } = useCart();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Verifica se o usuário está logado
+    const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    setIsLoggedIn(loggedIn);
+  }, []);
 
   const navLinks = [
     { label: "Início", href: "#" },
+    { label: "Diferenciais", href: "#diferenciais" },
     { label: "Cestas", href: "#produtos" },
-    { label: "Românticas", href: "#" },
-    { label: "Aniversário", href: "#" },
-    { label: "Corporativas", href: "#" },
-    { label: "Quem Somos", href: "#" },
+    { label: "Quem Somos", href: "#quem-somos" },
+    { label: "Depoimentos", href: "#depoimentos" },
     { label: "Contato", href: "#" },
   ];
 
-  const trustBadges = [
-    { icon: Phone, text: "(11) 99999-9999", subtext: "Atendimento" },
-    { icon: Shield, text: "Desde 2010", subtext: "Empresa" },
-    { icon: CreditCard, text: "100% Segura", subtext: "Sua compra" },
-    { icon: Truck, text: "Entrega Rápida", subtext: "Agilidade" },
-  ];
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault();
+    
+    if (href === "#") {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      setIsMenuOpen(false);
+      return;
+    }
+
+    const targetId = href.replace('#', '');
+    const element = document.getElementById(targetId);
+    
+    if (element) {
+      const headerOffset = 80;
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
+    }
+    
+    setIsMenuOpen(false);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('userEmail');
+    setIsLoggedIn(false);
+    navigate('/');
+  };
 
   return (
     <header className="sticky top-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border">
-      {/* Main header */}
       <div className="container mx-auto px-4 py-4">
-        <div className="flex items-center justify-between gap-4">
+        <div className="flex items-center justify-between gap-6">
           {/* Logo */}
           <a href="#" className="flex-shrink-0">
             <h1 className="font-serif text-2xl md:text-3xl font-bold text-foreground">
@@ -38,37 +77,66 @@ const Header = () => {
             <span className="text-xs text-muted-foreground">Cestas Especiais</span>
           </a>
 
-          {/* Search - Desktop */}
-          <div className="hidden md:flex flex-1 max-w-xl mx-8">
-            <div className="relative w-full">
-              <Input 
-                type="search" 
-                placeholder="Buscar cestas de café da manhã..." 
-                className="pr-12 bg-secondary/50 border-border focus:bg-background"
-              />
-              <Button 
-                size="icon" 
-                className="absolute right-0 top-0 h-full rounded-l-none"
-              >
-                <Search className="h-4 w-4" />
-              </Button>
-            </div>
-          </div>
+          {/* Navigation - Desktop */}
+          <nav className="hidden md:block flex-1">
+            <ul className="flex justify-center gap-8">
+              {navLinks.map((link, index) => (
+                <li key={index}>
+                  <a 
+                    href={link.href} 
+                    className="nav-link text-sm"
+                    onClick={(e) => handleNavClick(e, link.href)}
+                  >
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
 
           {/* Actions */}
           <div className="flex items-center gap-2">
-            <Button variant="ghost" size="icon" className="hidden md:flex">
-              <User className="h-5 w-5" />
-            </Button>
+            {isLoggedIn ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="icon" className="hidden md:flex">
+                    <User className="h-5 w-5" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem onClick={() => navigate('/pedidos')}>
+                    Meus Pedidos
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => navigate('/configuracoes')}>
+                    Meu Perfil
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={handleLogout}>
+                    Sair
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                className="hidden md:flex"
+                onClick={() => navigate('/login')}
+              >
+                <User className="h-5 w-5" />
+              </Button>
+            )}
+            
             <Button 
               variant="ghost" 
               size="icon" 
               className="relative"
-              onClick={() => window.location.href = '/carrinho'}>
+              onClick={() => navigate('/carrinho')}
+              data-cart-icon
+            >
               <ShoppingCart className="h-5 w-5" />
-              {cartCount > 0 && (
+              {itemCount > 0 && (
                 <Badge className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0 text-xs">
-                  {cartCount}
+                  {itemCount}
                 </Badge>
               )}
             </Button>
@@ -82,39 +150,7 @@ const Header = () => {
             </Button>
           </div>
         </div>
-
-        {/* Search - Mobile */}
-        <div className="md:hidden mt-4">
-          <div className="relative w-full">
-            <Input 
-              type="search" 
-              placeholder="Buscar cestas..." 
-              className="pr-12 bg-secondary/50"
-            />
-            <Button 
-              size="icon" 
-              className="absolute right-0 top-0 h-full rounded-l-none"
-            >
-              <Search className="h-4 w-4" />
-            </Button>
-          </div>
-        </div>
       </div>
-
-      {/* Navigation */}
-      <nav className="hidden md:block border-t border-border">
-        <div className="container mx-auto px-4">
-          <ul className="flex justify-center gap-8 py-3">
-            {navLinks.map((link, index) => (
-              <li key={index}>
-                <a href={link.href} className="nav-link text-sm">
-                  {link.label}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </nav>
 
       {/* Mobile menu */}
       {isMenuOpen && (
@@ -125,17 +161,63 @@ const Header = () => {
                 <a 
                   href={link.href} 
                   className="block py-2 text-foreground hover:text-primary transition-colors"
-                  onClick={() => setIsMenuOpen(false)}
+                  onClick={(e) => handleNavClick(e, link.href)}
                 >
                   {link.label}
                 </a>
               </li>
             ))}
             <li className="pt-4 border-t border-border">
-              <a href="#" className="flex items-center gap-2 py-2 text-foreground hover:text-primary">
-                <User className="h-4 w-4" />
-                Minha Conta
-              </a>
+              {isLoggedIn ? (
+                <>
+                  <a 
+                    href="#" 
+                    className="flex items-center gap-2 py-2 text-foreground hover:text-primary"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      navigate('/orders');
+                      setIsMenuOpen(false);
+                    }}
+                  >
+                    Meus Pedidos
+                  </a>
+                  <a 
+                    href="#" 
+                    className="flex items-center gap-2 py-2 text-foreground hover:text-primary"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      navigate('/profile');
+                      setIsMenuOpen(false);
+                    }}
+                  >
+                    Meu Perfil
+                  </a>
+                  <a 
+                    href="#" 
+                    className="flex items-center gap-2 py-2 text-foreground hover:text-primary"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleLogout();
+                      setIsMenuOpen(false);
+                    }}
+                  >
+                    Sair
+                  </a>
+                </>
+              ) : (
+                <a 
+                  href="#" 
+                  className="flex items-center gap-2 py-2 text-foreground hover:text-primary"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    navigate('/login');
+                    setIsMenuOpen(false);
+                  }}
+                >
+                  <User className="h-4 w-4" />
+                  Minha Conta
+                </a>
+              )}
             </li>
           </ul>
         </nav>

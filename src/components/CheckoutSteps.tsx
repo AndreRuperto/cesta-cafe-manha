@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react';
+
 interface CheckoutStepsProps {
   currentStep: number;
 }
@@ -10,38 +12,84 @@ const steps = [
 ];
 
 const CheckoutSteps = ({ currentStep }: CheckoutStepsProps) => {
+  const [animatedStep, setAnimatedStep] = useState(1);
+  const [filledSteps, setFilledSteps] = useState<number[]>([1]); // Steps com bolinha preenchida
+
+  console.log('🔵 CheckoutSteps renderizado');
+  console.log('📍 currentStep recebido:', currentStep);
+  console.log('📊 animatedStep atual:', animatedStep);
+  console.log('🎨 filledSteps:', filledSteps);
+
+  useEffect(() => {
+    console.log('⚡ useEffect disparado! currentStep mudou para:', currentStep);
+    
+    // Pequeno delay para garantir que a transição aconteça
+    const timer = setTimeout(() => {
+      console.log('✅ Atualizando animatedStep de', animatedStep, 'para', currentStep);
+      setAnimatedStep(currentStep);
+      
+      // Após 3 segundos (duração da animação), preenche a bolinha
+      setTimeout(() => {
+        console.log('🎯 Preenchendo bolinha do step:', currentStep);
+        setFilledSteps(prev => {
+          const newSteps = [...prev];
+          for (let i = 1; i <= currentStep; i++) {
+            if (!newSteps.includes(i)) {
+              newSteps.push(i);
+            }
+          }
+          return newSteps;
+        });
+      }, 1300);
+    }, 50);
+
+    return () => {
+      console.log('🧹 Limpando timeout');
+      clearTimeout(timer);
+    };
+  }, [currentStep]);
+
+  const progressWidth = ((animatedStep - 1) / (steps.length - 1)) * 100;
+  console.log('📏 Largura calculada da barra:', progressWidth + '%');
+
   return (
-    <div className="flex items-center justify-center w-full max-w-2xl mx-auto py-6">
-      {steps.map((step, index) => (
-        <div key={step.number} className="flex items-center">
-          <div className="flex flex-col items-center">
+    <div className="w-full max-w-3xl mx-auto py-6">
+      <div className="relative flex items-center justify-between">
+        {/* Linha de fundo */}
+        <div className="absolute top-5 left-0 right-0 h-1 bg-border rounded-full" style={{ zIndex: 0 }} />
+        
+        {/* Linha de progresso com animação de 3 segundos */}
+        <div 
+          className="absolute top-5 left-0 h-1 bg-gradient-to-r from-primary to-accent rounded-full"
+          style={{ 
+            width: `${progressWidth}%`,
+            zIndex: 0,
+            transition: 'width 2s cubic-bezier(0.4, 0, 0.2, 1)'
+          }}
+        />
+
+        {/* Steps */}
+        {steps.map((step) => (
+          <div key={step.number} className="flex flex-col items-center relative" style={{ zIndex: 1 }}>
             <div
               className={`w-10 h-10 rounded-full border-2 flex items-center justify-center font-medium transition-all duration-300 ${
-                step.number <= currentStep
-                  ? 'border-primary bg-primary/10 text-primary'
+                filledSteps.includes(step.number)
+                  ? 'border-primary bg-primary text-primary-foreground'
                   : 'border-border bg-background text-muted-foreground'
               }`}
             >
               {step.number}
             </div>
             <span
-              className={`mt-2 text-sm font-medium transition-colors duration-300 ${
-                step.number <= currentStep ? 'text-foreground' : 'text-muted-foreground'
+              className={`mt-2 text-xs md:text-sm font-medium transition-colors duration-300 text-center ${
+                filledSteps.includes(step.number) ? 'text-foreground' : 'text-muted-foreground'
               }`}
             >
               {step.label}
             </span>
           </div>
-          
-          {index < steps.length - 1 && (
-            <div
-              className={`w-16 md:w-24 h-0.5 mx-2 transition-colors duration-300 ${
-                step.number < currentStep ? 'bg-primary' : 'bg-border'
-              }`}
-            />
-          )}
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   );
 };

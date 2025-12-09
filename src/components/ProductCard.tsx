@@ -23,8 +23,8 @@ const ProductCard = ({ id, image, name, price, originalPrice, installments = 3, 
 
   const installmentValue = price / installments;
 
-  const handleAddToCart = () => {
-    addItem({ id, name, price, image });
+  const handleAddToCart = (e: React.MouseEvent<HTMLButtonElement>) => {
+    addItem({ id, name, price, image }, e);
     toast({
       title: "Adicionado ao carrinho!",
       description: name,

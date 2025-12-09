@@ -1,11 +1,13 @@
 import { useCart } from '@/contexts/CartContext';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Trash2, Plus, Minus, ShoppingBag, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import CheckoutSteps from '@/components/CheckoutSteps';
+import Header from '@/components/Header';
 
 const Cart = () => {
-  const { items, total, itemCount, updateQuantity, removeItem } = useCart();
+  const { items, total, itemCount, updateQuantity, removeItem, clearCart } = useCart();
+  const navigate = useNavigate();
 
   const formatPrice = (value: number) => {
     return value.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
@@ -13,41 +15,58 @@ const Cart = () => {
 
   if (itemCount === 0) {
     return (
-      <div className="min-h-screen bg-background">
-        <div className="container mx-auto px-4 py-8">
-          <CheckoutSteps currentStep={1} />
-          
-          <div className="flex flex-col items-center justify-center py-16">
-            <ShoppingBag className="w-24 h-24 text-muted-foreground/40 mb-6" />
-            <h2 className="text-2xl font-semibold text-foreground mb-2">
-              Seu carrinho está vazio
-            </h2>
-            <p className="text-muted-foreground mb-8">
-              Adicione cestas deliciosas ao seu carrinho
-            </p>
-            <Link to="/">
-              <Button className="gap-2">
-                <ArrowLeft className="w-4 h-4" />
-                Continuar Comprando
-              </Button>
-            </Link>
+      <>
+        <Header />
+        <div className="min-h-screen bg-background pt-[15px]">
+          <div className="container mx-auto px-4 py-8">
+            <CheckoutSteps currentStep={1} />
+            
+            <div className="flex flex-col items-center justify-center py-16">
+              <ShoppingBag className="w-24 h-24 text-muted-foreground/40 mb-6" />
+              <h2 className="text-2xl font-semibold text-foreground mb-2">
+                Seu carrinho está vazio
+              </h2>
+              <p className="text-muted-foreground mb-8">
+                Adicione cestas deliciosas ao seu carrinho
+              </p>
+              <Link to="/">
+                <Button className="gap-2">
+                  <ArrowLeft className="w-4 h-4" />
+                  Continuar Comprando
+                </Button>
+              </Link>
+            </div>
           </div>
         </div>
-      </div>
+      </>
     );
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8">
+    <>
+      <Header />
+      <div className="min-h-screen bg-background pt-[15px]">
+        <div className="container mx-auto px-4 py-8">
         <CheckoutSteps currentStep={1} />
         
         <div className="grid lg:grid-cols-3 gap-8 mt-8">
           {/* Cart Items */}
           <div className="lg:col-span-2 space-y-4">
-            <h1 className="text-2xl font-semibold text-foreground mb-6">
-              Meu Carrinho ({itemCount} {itemCount === 1 ? 'item' : 'itens'})
-            </h1>
+            <div className="flex items-center justify-between mb-6">
+              <h1 className="text-2xl font-semibold text-foreground">
+                Meu Carrinho ({itemCount} {itemCount === 1 ? 'item' : 'itens'})
+              </h1>
+              
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="gap-2 text-destructive hover:text-destructive hover:bg-destructive/10"
+                onClick={clearCart}
+              >
+                <Trash2 className="w-4 h-4" />
+                Esvaziar Carrinho
+              </Button>
+            </div>
             
             {items.map((item) => (
               <div
@@ -137,14 +156,19 @@ const Cart = () => {
                 </p>
               </div>
               
-              <Button className="w-full" size="lg">
+              <Button 
+                className="w-full" 
+                size="lg"
+                onClick={() => navigate('/entrega')}
+              >
                 Continuar para Entrega
               </Button>
             </div>
           </div>
         </div>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
