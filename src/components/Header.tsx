@@ -32,18 +32,42 @@ const Header = () => {
     { label: "Contato", href: "#" },
   ];
 
-  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+  const handleNavClick = async (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault();
-    
+
     if (href === "#") {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      navigate("/");
+      setTimeout(() => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }, 50);
       setIsMenuOpen(false);
       return;
     }
 
-    const targetId = href.replace('#', '');
+    const targetId = href.replace("#", "");
+
+    // Se NÃO estiver na página inicial, navega para ela primeiro
+    if (window.location.pathname !== "/") {
+      navigate("/");
+
+      // espera o React montar a página inicial
+      setTimeout(() => {
+        const element = document.getElementById(targetId);
+        if (element) {
+          const headerOffset = 80;
+          const elementPosition = element.getBoundingClientRect().top;
+          const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+          window.scrollTo({ top: offsetPosition, behavior: "smooth" });
+        }
+      }, 80);
+
+      setIsMenuOpen(false);
+      return;
+    }
+
+    // Já estamos na tela inicial → só fazer o scroll
     const element = document.getElementById(targetId);
-    
     if (element) {
       const headerOffset = 80;
       const elementPosition = element.getBoundingClientRect().top;
@@ -51,10 +75,10 @@ const Header = () => {
 
       window.scrollTo({
         top: offsetPosition,
-        behavior: 'smooth'
+        behavior: "smooth"
       });
     }
-    
+
     setIsMenuOpen(false);
   };
 
